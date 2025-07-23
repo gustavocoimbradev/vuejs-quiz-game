@@ -11,7 +11,7 @@
 
 <body class="h-full w-full bg-slate-100/50">
     <div id="app" class="h-full w-full grid place-content-center">
-        <div v-if="!gameOver && questions.length" class="p-2 flex flex-col gap-3 w-[300px]">
+        <div v-if="!gameOver && questions.length" class="p-2 flex flex-col gap-3 w-[300px] w-max-[calc(100dvw-30px)]">
             <div class="px-4 py-3 bg-slate-300 text-slate-600 rounded-md flex flex-col gap-3">
                 <div class="font-semibold text-sm mx-auto border-b w-full text-center pb-3 border-slate-400/50"
                     v-html="questions[currentQuestion].question"></div>
@@ -55,13 +55,13 @@
                 <div>{{ score }}</div>
             </div>
         </div>
-        <div v-if="!gameOver && !questions.length" class="p-2 flex flex-col gap-3 w-[300px]">
+        <div v-if="!gameOver && !questions.length" class="p-2 flex flex-col gap-3 w-[300px] w-max-[calc(100dvw-30px)]">
             <div class="w-[300px] h-[300px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
                 <h1 class="text-lg font-semibold text-slate-700">Just a moment...</h1>
                 <p class="mt-2 text-sm text-slate-700">We're getting your questions ready!</p>
             </div>
         </div>
-        <div v-if="gameOver" class="p-2 flex flex-col gap-3 w-[300px]">
+        <div v-if="gameOver" class="p-2 flex flex-col gap-3 w-[300px] w-max-[calc(100dvw-30px)]">
             <div class="w-[300px] h-[300px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
                 <h1 class="text-lg font-semibold text-slate-700">GAME OVER</h1>
                 <p class="mt-2 text-sm text-slate-700">Your final score is {{ score }}</p>
