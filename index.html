@@ -98,13 +98,13 @@
         </div>
         <div v-if="!gameOver && !questions.length && started"
             class="p-2 flex flex-col gap-3 w-[500px] max-w-[calc(100dvw-30px)]">
-            <div class="w-full h-[500px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
+            <div class="w-[500px] max-w-full h-[500px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
                 <h1 class="text-lg font-semibold text-slate-700">Just a moment...</h1>
                 <p class="mt-2 text-sm text-slate-700">We're getting your questions ready!</p>
             </div>
         </div>
         <div v-if="gameOver" class="p-2 flex flex-col gap-3 w-[500px] max-w-[calc(100dvw-30px)]">
-            <div class="w-full h-[500px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
+            <div class="w-[500px] max-w-full h-[500px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
                 <h1 class="text-lg font-semibold text-slate-700">GAME OVER</h1>
                 <p class="mt-2 text-sm text-slate-700">Your final score is {{ score }}</p>
                 <button

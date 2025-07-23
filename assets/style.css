@@ -222,6 +222,9 @@
   .max-w-\[calc\(100dvw-30px\)\] {
     max-width: calc(100dvw - 30px);
   }
+  .max-w-full {
+    max-width: 100%;
+  }
   .border-collapse {
     border-collapse: collapse;
   }
