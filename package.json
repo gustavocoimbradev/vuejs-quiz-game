@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.html",
   "scripts": {
+    "publish": "git add . && git pull && git commit -m 'vuejs-quiz-game' && git push",
     "watch": "npx @tailwindcss/cli -i ./src/style.css -o ./assets/style.css --watch"
   },
   "author": "",
