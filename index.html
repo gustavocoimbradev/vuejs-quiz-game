@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full w-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body class="h-full w-full bg-slate-100/50">
+    <div id="app" class="h-full w-full grid place-content-center">
+        <div v-if="!gameOver && questions.length" class="p-2 flex flex-col gap-3 w-[300px]">
+            <div class="px-4 py-3 bg-slate-300 text-slate-600 rounded-md flex flex-col gap-3">
+                <div class="font-semibold text-sm mx-auto border-b w-full text-center pb-3 border-slate-400/50"
+                    v-html="questions[currentQuestion].question"></div>
+                <div class="mx-auto w-full">
+                    <div class="flex justify-center gap-3">
+                        <label class="flex items-center gap-1 text-sm text-slate-700">
+                            <input type="radio" value="True" v-model="currentUserAnswer" :disabled="userAnswered"
+                                class="accent-slate-400">
+                            True
+                        </label>
+                        <label class="flex items-center gap-1 text-sm text-slate-700">
+                            <input type="radio" value="False" v-model="currentUserAnswer" :disabled="userAnswered"
+                                class="accent-slate-400">
+                            False
+                        </label>
+                    </div>
+                </div>
+                <div v-if="userAnswered" class="px-4 py-2 rounded-md text-sm text-center" :class="{
+                    'text-green-800 bg-green-100':isCorrect,
+                    'text-red-800 bg-red-100':!isCorrect,
+                }">
+                    <span v-if="isCorrect">✅ Correct! Well done.</span>
+                    <span v-else>❌ Incorrect. Try the next one!</span>
+                </div>
+                <div>
+                    <button v-if="!userAnswered"
+                        class="bg-blue-600 px-2 py-2 rounded-md text-slate-300 text-sm w-full block transition-all ease-in-out duration-300 cursor-pointer hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-70"
+                        :disabled="currentUserAnswer==null" @click="handleAnswer">
+                        Answer
+                    </button>
+                    <button v-if="userAnswered"
+                        class="bg-blue-600 px-2 py-2 rounded-md text-slate-300 text-sm w-full block transition-all ease-in-out duration-300 cursor-pointer hover:bg-blue-700"
+                        @click="handleNextQuestion">
+                        Next question
+                    </button>
+                </div>
+            </div>
+            <div
+                class="px-4 py-2 bg-slate-700 text-slate-300 rounded-md text-sm font-semibold flex justify-between gap-3">
+                <div>Your score</div>
+                <div>{{ score }}</div>
+            </div>
+        </div>
+        <div v-if="!gameOver && !questions.length" class="p-2 flex flex-col gap-3 w-[300px]">
+            <div class="w-[300px] h-[300px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
+                <h1 class="text-lg font-semibold text-slate-700">Just a moment...</h1>
+                <p class="mt-2 text-sm text-slate-700">We're getting your questions ready!</p>
+            </div>
+        </div>
+        <div v-if="gameOver" class="p-2 flex flex-col gap-3 w-[300px]">
+            <div class="w-[300px] h-[300px] flex flex-col items-center  justify-center bg-slate-300 rounded-md ">
+                <h1 class="text-lg font-semibold text-slate-700">GAME OVER</h1>
+                <p class="mt-2 text-sm text-slate-700">Your final score is {{ score }}</p>
+                <button
+                    class="mt-5 bg-slate-600 px-2 py-2 rounded-md text-slate-300 text-sm block transition-all ease-in-out duration-300 cursor-pointer hover:bg-slate-700"
+                    @click="playAgain">
+                    Play again
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { createApp, ref, computed } = Vue
+        createApp({
+            setup() {
+                let questions = ref([]);
+                const getQuestions = async () => {
+                    let data;
+                    do {
+                        const response = await fetch('https://opentdb.com/api.php?amount=10&type=boolean');
+                        data = await response.json();
+                    } while (data.response_code !== 0);
+
+                    questions.value = data.results;
+                    console.log(data);
+                };
+                getQuestions();
+                const currentQuestion = ref(0);
+                const score = ref(0);
+                const currentUserAnswer = ref(null);
+                let userAnswered = ref(false);
+                let gameOver = ref(false);
+                const handleAnswer = () => {
+                    userAnswered.value = true;
+                    if (isCorrect.value) score.value++
+                }
+                const handleNextQuestion = () => {
+                    currentUserAnswer.value = null;
+                    userAnswered.value = false;
+                    currentQuestion.value++;
+                    if (questions.value.length === currentQuestion.value) {
+                        gameOver.value = true;
+                    }
+                }
+                const isCorrect = computed(() => {
+                    return currentUserAnswer.value === questions.value[currentQuestion.value].correct_answer;
+                })
+                const playAgain = () => {
+                    location.reload();
+                }
+                return {
+                    questions, currentQuestion, score, currentUserAnswer,
+                    userAnswered, isCorrect, handleAnswer, handleNextQuestion,
+                    gameOver, playAgain
+                };
+
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
