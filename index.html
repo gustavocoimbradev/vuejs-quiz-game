@@ -126,18 +126,24 @@
                     started.value = true;
                     getQuestions();
                 }
-                const getQuestions = async () => {
-                    let data;
-                    do {
-                        const response = await fetch(
-                            'https://opentdb.com/api.php?amount=10&type=boolean' +
-                            (category.value === 0 ? '' : `&category=${category.value}`)
-                        );
-                        data = await response.json();
-                    } while (data.response_code !== 0);
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                    questions.value = data.results;
-                };
+const getQuestions = async () => {
+    let data;
+    do {
+        const response = await fetch(
+            'https://opentdb.com/api.php?amount=10&type=boolean' +
+            (category.value === 0 ? '' : `&category=${category.value}`)
+        );
+        data = await response.json();
+
+        if (data.response_code !== 0) {
+            await delay(3000);
+        }
+    } while (data.response_code !== 0);
+
+    questions.value = data.results;
+};
                 const currentQuestion = ref(0);
                 const score = ref(0);
                 const currentUserAnswer = ref(null);
