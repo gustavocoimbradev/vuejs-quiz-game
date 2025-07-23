@@ -59,9 +59,8 @@
         <div v-if="!gameOver && !questions.length && !started"
             class="p-2 flex flex-col gap-3 w-[500px] max-w-[calc(100dvw-30px)]">
             <div class="w-[500px] h-[500px] flex flex-col items-center  justify-center bg-slate-300 rounded-md p-4">
-                <h1 class="text-lg font-semibold text-slate-700">Welcome to the quiz game!</h1>
-                <p class="mt-2 text-xs text-slate-700 text-center">Please, select your favorite category to start
-                    answering</p>
+                <h1 class="text-lg font-semibold text-slate-700">Ready to have some fun?</h1>
+                <p class="mt-2 text-xs text-slate-700 text-center">Choose a category and let's begin the quiz!</p>
                 <select name="category" v-model="category"
                     class="text-xs w-full mt-4 text-center bg-slate-100 py-2 rounded-md">
                     <option value="0" selected>Any Category</option>
